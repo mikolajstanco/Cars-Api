@@ -1,0 +1,57 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f3f6fb;
+  font-synthesis: none;
+  line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #155eef; text-decoration: none; }
+a:hover { text-decoration: underline; }
+button, input, select { font: inherit; }
+button, .button {
+  border: 0;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  padding: 0.6rem 0.9rem;
+}
+button[type="submit"], .button.primary { background: #155eef; color: white; }
+button.secondary, .button.secondary { background: #e7edf8; color: #172033; }
+button.danger { background: #c62828; color: white; }
+button:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.site-header { background: #172033; color: white; }
+.nav { align-items: center; display: flex; gap: 1.25rem; margin: 0 auto; max-width: 1100px; padding: 1rem 1.25rem; }
+.brand { color: white; font-size: 1.25rem; font-weight: 700; margin-right: auto; }
+.nav a { color: #dce5f7; }
+.nav a.active { color: white; font-weight: 700; }
+.container { margin: 0 auto; max-width: 1100px; padding: 2rem 1.25rem; }
+.page-heading { align-items: center; display: flex; gap: 1rem; justify-content: space-between; margin-bottom: 1.5rem; }
+.page-heading h1 { margin: 0; }
+.stack { display: grid; gap: 1rem; }
+.card { background: white; border: 1px solid #dfe5ef; border-radius: 0.7rem; padding: 1.25rem; }
+.car-list { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.car-card h2 { margin-top: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.filter { margin-bottom: 1.25rem; max-width: 420px; }
+.filter label, .field label { display: grid; gap: 0.35rem; font-weight: 600; }
+.filter input, .field input, .field select {
+  border: 1px solid #b9c5d8;
+  border-radius: 0.4rem;
+  padding: 0.6rem;
+  width: 100%;
+}
+.form { display: grid; gap: 1rem; max-width: 760px; }
+.form-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+.form-error, .error { color: #b42318; }
+.notice { background: #fff7e6; border: 1px solid #f1c76b; border-radius: 0.5rem; padding: 0.8rem; }
+.details { display: grid; gap: 0.6rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.details dt { color: #5a667d; font-weight: 600; }
+.details dd { margin: 0; }
+@media (max-width: 600px) {
+  .nav { flex-wrap: wrap; }
+  .brand { flex-basis: 100%; }
+  .form-grid, .details { grid-template-columns: 1fr; }
+}
