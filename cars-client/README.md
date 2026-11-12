@@ -1,32 +1,29 @@
-# React + TypeScript + Vite
+# Cars Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Klient React + TypeScript dla backendu `Cars.API`.
 
-Currently, two official plugins are available:
+## Uruchomienie
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Uruchom backend ASP.NET Core z profilem HTTPS, a następnie w katalogu `cars-client`:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Adres API jest ustawiony w pliku `.env.development`:
+
+```text
+VITE_API_URL=https://localhost:7182/api
+```
+
+Przy pierwszym wejściu na adres HTTPS backendu zaakceptuj lokalny certyfikat deweloperski.
+
+## Funkcje
+
+- pobieranie i modyfikowanie samochodów przez Axios,
+- routing dla listy, szczegółów, dodawania i edycji,
+- wyszukiwanie po marce lub modelu,
+- oznaczanie samochodów jako ulubione,
+- filtrowanie tylko ulubionych,
+- zapamiętywanie ulubionych w `localStorage` przez Zustand `persist`.

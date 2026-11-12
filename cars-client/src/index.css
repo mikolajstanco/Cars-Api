@@ -43,6 +43,12 @@ button:disabled { cursor: not-allowed; opacity: 0.6; }
   padding: 0.6rem;
   width: 100%;
 }
+.cars-toolbar { align-items: center; display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
+.cars-toolbar input[type="search"] { border: 1px solid #b9c5d8; border-radius: 0.4rem; font: inherit; min-width: 280px; padding: 0.6rem; }
+.favorite-filter { align-items: center; display: flex; gap: 7px; }
+.favorite-button { background: #64748b; color: white; }
+.active-favorite { background: #d97706; }
+.favorite-counter { color: #dce5f7; font-weight: 600; margin-left: auto; }
 .form { display: grid; gap: 1rem; max-width: 760px; }
 .form-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
 .form-error, .error { color: #b42318; }

@@ -1,46 +1,64 @@
+import axios from 'axios'
 import type { Car, NewCar } from '../models/Car'
+import { apiClient } from '../api/apiClient'
 
-const carsUrl = `${import.meta.env.VITE_API_URL ?? 'http://localhost:3000'}/cars`
+function createServiceError(error: unknown, message: string): Error {
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      return new Error(`${message} Status HTTP: ${error.response.status}.`, { cause: error })
+    }
 
-async function ensureSuccess(response: Response) {
-  if (!response.ok) {
-    throw new Error(`Żądanie nie powiodło się. Status: ${response.status}`)
+    if (error.request) {
+      return new Error(`${message} Brak odpowiedzi z serwera.`, { cause: error })
+    }
+
+    return new Error(`${message} ${error.message}`, { cause: error })
   }
+
+  return new Error(message, { cause: error })
 }
 
 export async function getCars(signal?: AbortSignal): Promise<Car[]> {
-  const response = await fetch(carsUrl, { signal })
-  await ensureSuccess(response)
-  return response.json() as Promise<Car[]>
+  try {
+    const response = await apiClient.get<Car[]>('/cars', { signal })
+    return response.data
+  } catch (error) {
+    if (axios.isCancel(error)) throw error
+    throw createServiceError(error, 'Nie udało się pobrać samochodów.')
+  }
 }
 
 export async function getCarById(id: string, signal?: AbortSignal): Promise<Car> {
-  const response = await fetch(`${carsUrl}/${encodeURIComponent(id)}`, { signal })
-  await ensureSuccess(response)
-  return response.json() as Promise<Car>
+  try {
+    const response = await apiClient.get<Car>(`/cars/${encodeURIComponent(id)}`, { signal })
+    return response.data
+  } catch (error) {
+    if (axios.isCancel(error)) throw error
+    throw createServiceError(error, 'Nie udało się pobrać samochodu.')
+  }
 }
 
 export async function createCar(car: NewCar): Promise<Car> {
-  const response = await fetch(carsUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(car),
-  })
-  await ensureSuccess(response)
-  return response.json() as Promise<Car>
+  try {
+    const response = await apiClient.post<Car>('/cars', car)
+    return response.data
+  } catch (error) {
+    throw createServiceError(error, 'Nie udało się dodać samochodu.')
+  }
 }
 
-export async function updateCar(id: string, car: NewCar): Promise<Car> {
-  const response = await fetch(`${carsUrl}/${encodeURIComponent(id)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(car),
-  })
-  await ensureSuccess(response)
-  return response.json() as Promise<Car>
+export async function updateCar(id: string, car: NewCar): Promise<void> {
+  try {
+    await apiClient.put(`/cars/${encodeURIComponent(id)}`, car)
+  } catch (error) {
+    throw createServiceError(error, 'Nie udało się zaktualizować samochodu.')
+  }
 }
 
 export async function deleteCar(id: string): Promise<void> {
-  const response = await fetch(`${carsUrl}/${encodeURIComponent(id)}`, { method: 'DELETE' })
-  await ensureSuccess(response)
+  try {
+    await apiClient.delete(`/cars/${encodeURIComponent(id)}`)
+  } catch (error) {
+    throw createServiceError(error, 'Nie udało się usunąć samochodu.')
+  }
 }
