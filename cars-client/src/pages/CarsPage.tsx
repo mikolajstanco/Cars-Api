@@ -4,9 +4,11 @@ import { Link } from 'react-router'
 import type { Car } from '../models/Car'
 import { deleteCar, getCars } from '../services/carService'
 import CarCard from '../components/CarCard'
+import { useAuthStore } from '../store/useAuthStore'
 import { useCarUiStore } from '../store/useCarUiStore'
 
 export default function CarsPage() {
+  const user = useAuthStore((state) => state.user)
   const [cars, setCars] = useState<Car[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -14,7 +16,8 @@ export default function CarsPage() {
   const setSearchTerm = useCarUiStore((state) => state.setSearchTerm)
   const showFavoritesOnly = useCarUiStore((state) => state.showFavoritesOnly)
   const setShowFavoritesOnly = useCarUiStore((state) => state.setShowFavoritesOnly)
-  const favoriteCarIds = useCarUiStore((state) => state.favoriteCarIds)
+  const favoriteCarIdsByUser = useCarUiStore((state) => state.favoriteCarIdsByUser)
+  const favoriteCarIds = user ? favoriteCarIdsByUser[user.id] ?? [] : []
   const removeFavorite = useCarUiStore((state) => state.removeFavorite)
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function CarsPage() {
     if (!window.confirm(`Czy na pewno chcesz usunąć samochód ${car.brand} ${car.model}?`)) return
     try {
       await deleteCar(car.id)
-      removeFavorite(car.id)
+      if (user) removeFavorite(user.id, car.id)
       setCars((current) => current.filter((item) => item.id !== car.id))
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : 'Nie udało się usunąć samochodu.')

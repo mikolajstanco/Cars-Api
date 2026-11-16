@@ -4,6 +4,14 @@ import { apiClient } from '../api/apiClient'
 
 function createServiceError(error: unknown, message: string): Error {
   if (axios.isAxiosError(error)) {
+    if (error.response?.status === 401) {
+      return new Error(`${message} Sesja wygasła – zaloguj się ponownie.`, { cause: error })
+    }
+
+    if (error.response?.status === 403) {
+      return new Error(`${message} Brak uprawnień do wykonania tej operacji.`, { cause: error })
+    }
+
     if (error.response) {
       return new Error(`${message} Status HTTP: ${error.response.status}.`, { cause: error })
     }

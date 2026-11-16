@@ -49,6 +49,12 @@ button:disabled { cursor: not-allowed; opacity: 0.6; }
 .favorite-button { background: #64748b; color: white; }
 .active-favorite { background: #d97706; }
 .favorite-counter { color: #dce5f7; font-weight: 600; margin-left: auto; }
+.nav-push { margin-left: auto; }
+.user-info { color: white; font-weight: 600; }
+.nav-button { background: #e7edf8; color: #172033; padding: 0.4rem 0.8rem; }
+.auth-card { margin: 0 auto; max-width: 480px; }
+.auth-card h1, .auth-card p { margin: 0; }
+.hint { color: #5a667d; font-size: 0.9rem; }
 .form { display: grid; gap: 1rem; max-width: 760px; }
 .form-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
 .form-error, .error { color: #b42318; }

@@ -4,13 +4,17 @@ import { Link, useParams } from 'react-router'
 import type { Car } from '../models/Car'
 import { bodyTypes, fuelTypes } from '../models/Car'
 import { getCarById } from '../services/carService'
+import { useAuthStore } from '../store/useAuthStore'
 import { useCarUiStore } from '../store/useCarUiStore'
 
 export default function CarDetailsPage() {
   const { id } = useParams()
+  const user = useAuthStore((state) => state.user)
   const [car, setCar] = useState<Car | null>(null)
   const [error, setError] = useState('')
-  const isFavorite = useCarUiStore((state) => car ? state.favoriteCarIds.includes(car.id) : false)
+  const isFavorite = useCarUiStore((state) =>
+    user && car ? (state.favoriteCarIdsByUser[user.id] ?? []).includes(car.id) : false,
+  )
   const toggleFavorite = useCarUiStore((state) => state.toggleFavorite)
 
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function CarDetailsPage() {
     ['Średnie spalanie', `${car.averageFuelConsumption} l/100 km`], ['Typ nadwozia', bodyTypes[car.bodyType] ?? 'Nieznany'],
   ]
   return <section className="stack">
-    <div className="page-heading"><h1>{car.brand} {car.model}</h1><div className="actions"><button type="button" className={isFavorite ? 'favorite-button active-favorite' : 'favorite-button'} onClick={() => toggleFavorite(car.id)}>{isFavorite ? 'Ulubiony' : 'Ulubione'}</button><Link className="button secondary" to={`/cars/${car.id}/edit`}>Edytuj</Link><Link className="button secondary" to="/cars">Wróć do listy</Link></div></div>
+    <div className="page-heading"><h1>{car.brand} {car.model}</h1><div className="actions"><button type="button" className={isFavorite ? 'favorite-button active-favorite' : 'favorite-button'} onClick={() => { if (user) toggleFavorite(user.id, car.id) }}>{isFavorite ? 'Ulubiony' : 'Ulubione'}</button><Link className="button secondary" to={`/cars/${car.id}/edit`}>Edytuj</Link><Link className="button secondary" to="/cars">Wróć do listy</Link></div></div>
     <dl className="card details">{details.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
   </section>
 }
